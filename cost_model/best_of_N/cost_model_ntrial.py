@@ -67,7 +67,9 @@ def compute_tradeoff(log_file, tokenizer, **kwargs):
         sequence_lengths = row["token_length"]
         generation_lengths = [sl - context_length for sl in sequence_lengths]
         
-        scores = row["score"]
+        scores = row["score"]   
+        if any(score > 1 for score in scores):
+            scores = [score / 100 for score in scores]
         cov = coverage(scores, num_trials)
         
         if not is_sparse:
@@ -108,6 +110,7 @@ def compute_tradeoff(log_file, tokenizer, **kwargs):
 
 if __name__ == "__main__":
     E_flops = 562.5
+    task = "aime24"
     
     model_sizes = {
         "0.6B": 0.752,
@@ -119,8 +122,9 @@ if __name__ == "__main__":
     }
     
     sparse_arg = sys.argv[1]
+    res_dir = f"{task}/{sparse_arg}"
     
-    for model in ["Qwen3-32B", "Qwen3-14B", "Qwen3-8B", "Qwen3-4B", "Qwen3-1.7B", "Qwen3-0.6B"]:
+    for model in ["Qwen3-32B", "Qwen3-14B", "Qwen3-8B", "Qwen3-4B", "Qwen3-1.7B", "Qwen3-0.6B"]:   
         config = AutoConfig.from_pretrained(f"Qwen/{model}")
         tokenizer = AutoTokenizer.from_pretrained(f"Qwen/{model}")
         
@@ -129,11 +133,11 @@ if __name__ == "__main__":
         num_attn_heads = config.num_attention_heads
         num_kv_heads = config.num_key_value_heads
         head_dim = config.head_dim * config.num_hidden_layers
-        for task in ["aime24"]:
-            res_dir = f"{task}" 
-            log_files = os.listdir(res_dir)
-            
-            for log_file in log_files:
-                if log_file.endswith(".jsonl") and f"_{sparse_arg}" in log_file:
-                    result_df = compute_tradeoff(log_file, tokenizer, nparams=nparams, num_attn_heads=num_attn_heads, num_kv_heads=num_kv_heads, head_dim=head_dim, E_flops=E_flops)
-                    result_df.to_csv(f"{res_dir}/{log_file.split('/')[-1].split('.')[0]}_tradeoff.csv", index=False)
+        
+        log_files = os.listdir(res_dir)
+        model_name = model.lower().replace(".", "-")
+        
+        for log_file in log_files:
+            if log_file.endswith(".jsonl") and f"_{sparse_arg}" in log_file and model_name in log_file:
+                result_df = compute_tradeoff(f"{res_dir}/{log_file}", tokenizer, nparams=nparams, num_attn_heads=num_attn_heads, num_kv_heads=num_kv_heads, head_dim=head_dim, E_flops=E_flops)
+                result_df.to_csv(f"{res_dir}/{log_file.split('/')[-1].split('.')[0]}_ntrial_tradeoff.csv", index=False)

@@ -31,7 +31,7 @@ def apply_chat_template(example, tokenizer, template):
 
 def coverage(scores, nsamples: List[int]) -> List[float]:
     num_trials = len(scores)
-    ncorrect = int(sum(scores) / 100.)
+    ncorrect = int(sum(scores))
     coverage_scores = []
     for nsample in nsamples:
         cov = 1 - comb(num_trials - ncorrect, nsample) / comb(num_trials, nsample)

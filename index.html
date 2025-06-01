@@ -210,7 +210,7 @@
                   </div>
                 </div>
                 <figure style="flex: 1 1 20%; margin: 0;">
-                  <img src="static/images/combined_figure2.jpg" alt="Combined Figure 2" style="width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                  <img src="static/images/F1A.png" alt="Combined Figure 2" style="width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
                   <figcaption style="text-align: center; margin-top: 8px; font-size: 14px; color: #555;">
                     <em>Figure 1: On the AIME24 dataset, the optimal Qwen3 model size wrt the existing scaling law could be upto 3x costlier than the optimal model size wrt the Kinetics scaling law.</em>
                   </figcaption>
@@ -233,7 +233,7 @@
                   </p>
                 </div>
                 <figure style="flex: 1 1 20%; margin: 0;">
-                  <img src="static/images/aime24_acc_vs_trials.jpg" alt="AIME24 Accuracy vs Trials" style="width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                  <img src="static/images/F1B.png" alt="AIME24 Accuracy vs Trials" style="width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
                   <figcaption style="text-align: center; margin-top: 8px; font-size: 14px; color: #555;">
                     <em>Figure 2: Kinetics Sparse scaling law for Qwen3 series on AIME24 dataset. Here we consider the ideal case of top-k attention with no search overhead.</em>
                   </figcaption>
@@ -465,7 +465,7 @@
               <!-- 6 figures (in 2x3 grid) , center aligned -->
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
                 <div style="text-align: center;">
-                  <img src="static/images/aime24_acc_vs_trials.jpg" alt="topk-benefits" style="width: 100%; height: auto; border-radius: 6px;" />
+                  <img src="static/images/F1B.png" alt="topk-benefits" style="width: 100%; height: auto; border-radius: 6px;" />
                   <p style="margin-top: 8px; font-size: 14px; color: #666;">Figure 5a: Best-of-N scaling comparison between oracle top-k and dense attention</p>
                 </div>
                 <div style="text-align: center;">
@@ -477,7 +477,7 @@
                   <p style="margin-top: 8px; font-size: 14px; color: #666;">Figure 5c: Best-of-N using Qwen3-32B </p>
                 </div>
                 <div style="text-align: center;">
-                  <img src="static/images/aime24_acc_vs_genlen-1.jpg" alt="topk-benefits" style="width: 100%; height: auto; border-radius: 6px;" />
+                  <img src="static/images/AIME24-topk-genlen-1.jpg" alt="topk-benefits" style="width: 100%; height: auto; border-radius: 6px;" />
                   <p style="margin-top: 8px; font-size: 14px; color: #666;">Figure 5d: Long-CoT scaling comparison between oracle top-k and dense attention</p>
                 </div>
                 <div style="text-align: center;">
@@ -541,11 +541,11 @@
                   <p style="margin-top: 8px; font-size: 14px; color: #666; text-align: center;">Figure 7a: Sparse algorithm comparison</p>
                 </div>
                 <div>
-                  <img src="static/images/aime24_acc_vs_trials_block_topk_trials-1.jpg" alt="block topk trial" style="width: 100%; height: auto; border-radius: 6px;" />
+                  <img src="static/images/AIME24-blocktopk-trial-1.jpg" alt="block topk trial" style="width: 100%; height: auto; border-radius: 6px;" />
                   <p style="margin-top: 8px; font-size: 14px; color: #666; text-align: center;">Figure 7b: Block top-k Best-of-N scaling</p>
                 </div>
                 <div>
-                  <img src="static/images/aime24_qwen3-8b_sparse_method_comparison_genlen-1.jpg" alt="block topk genlen" style="width: 100%; height: auto; border-radius: 6px;" />
+                  <img src="static/images/AIME24-blocktopk-genlen-1.jpg" alt="block topk genlen" style="width: 100%; height: auto; border-radius: 6px;" />
                   <p style="margin-top: 8px; font-size: 14px; color: #666; text-align: center;">Figure 7c: Block top-k Long-CoT scaling</p>
                 </div>
               </div>

@@ -170,7 +170,7 @@
       <div class="column is-four-fifths">
           <div class="content has-text-justified">
             <p>
-              <strong style="font-weight: 900;color: #0f598a">TL;DR:</strong> We introduce <strong>Kinetics</strong>, which challenges the traditional test-time scaling (TTS) laws by adopting a <strong>practical efficiency</strong> perspective. It reveals that prior compute-optimal approaches overlook major <em>key-value memory access bottlenecks</em> in various TTS strategies. By jointly considering memory and compute, the <strong>Kinetics scaling law</strong> shows that <em>it is more efficient to scale model size up to a threshold before investing more compute in test-time scaling</em>. Additionally, Kinetics promotes <strong>sparse attention</strong> to establish a better trade-off between accuracy and inference-scaling cost (both memory and compute).
+              <strong style="font-weight: 900;color: #0f598a">TL;DR:</strong> We introduce <strong>Kinetics</strong>, which challenges the traditional test-time scaling (TTS) laws by adopting a <strong>practical efficiency</strong> perspective. It reveals that prior compute-optimal approaches overlook major <em>key-value memory access bottlenecks</em> in various TTS strategies. By jointly considering memory and compute, the <strong>Kinetics scaling law</strong> shows that <em>it is more efficient to scale model size up to a threshold before investing more compute in test-time scaling</em>. Additionally, Kinetics promotes <strong>sparse attention</strong> to establish an even better scalability.
             </p>
           </div>
         </div>
@@ -225,7 +225,7 @@
                     &nbsp;Sparse Scaling Law
                   </h4>
                   <p>
-                    KV memory footprint becomes a major bottleneck for TTS. We observe that <strong style="color: #4b6cb7;">sparse attention</strong> can achieve better accuracy-cost trade-off by reducing per-token cost and enabling <em style="color: #27ae60;">longer generation lengths</em> and <em style="color: #27ae60;">more parallel samples</em> under the same cost budget. Empirically, it yields up to <strong style="color: #27ae60;">60-point</strong> gains in low-cost settings and <strong style="color: #27ae60;">5-point</strong> gains in high-cost regimes on benchmarks like <em>AIME</em> and <em>LiveCodeBench</em>. By ameliorating the KV memory access bottleneck, sparse attention can potentially reshape the optimal pareto frontier of TTS. 
+                    KV memory footprint becomes a major bottleneck for TTS. We find that <strong style="color: #4b6cb7;">sparse attention</strong> unlocks greater test-time scalability by reducing per-token cost, thereby enabling <em style="color: #27ae60;">longer generation lengths</em> and <em style="color: #27ae60;">more parallel samples</em> under the same cost budget. Empirically, it yields up to <strong style="color: #27ae60;">60-point</strong> gains in low-cost settings and <strong style="color: #27ae60;">5-point</strong> gains in high-cost regimes on benchmarks like <em>AIME</em> and <em>LiveCodeBench</em>. Thus, sparse attention becomes essential for realizing the full potential of test-time scaling because, unlike training, where parameter scaling saturates, test-time accuracy continues to improve through increased generation.
                   </p>
 
                   <p>

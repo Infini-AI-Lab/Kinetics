@@ -163,6 +163,45 @@
     </div>
   </section>
 
+
+  <section class="section" style="background: #f7faff; padding-top: 32px; padding-bottom: 16px;">
+    <div class="container is-fluid">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <div style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;">
+          
+            <!-- Figure 1 -->
+            <div id="figure1" style="flex: 1 1 48%; background: #fff; padding: 16px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+              <h4 class="title is-5" style="text-align: center; color: #4b6cb7;">
+                Kinetics Scaling Law
+              </h4>
+              <a href="#figure1">
+                <img src="static/images/F1A.png" alt="Kinetics Scaling" style="width: 100%; border-radius: 6px;">
+              </a>
+              <figcaption style="text-align: center; margin-top: 8px; font-size: 14px; color: #555;">
+                <em>Figure 1: On AIME24, compute-optimal model choices can be up to 3× costlier than those guided by the Kinetics scaling law.</em>
+              </figcaption>
+            </div>
+  
+            <!-- Figure 2 -->
+            <div id="figure2" style="flex: 1 1 48%; background: #fff; padding: 16px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+              <h4 class="title is-5" style="text-align: center; color: #4b6cb7;">
+                Sparse Scaling Advantage
+              </h4>
+              <a href="#figure2">
+                <img src="static/images/F1B.png" alt="Sparse Scaling" style="width: 100%; border-radius: 6px;">
+              </a>
+              <figcaption style="text-align: center; margin-top: 8px; font-size: 14px; color: #555;">
+                <em>Figure 2: Sparse attention unlocks stronger scaling by enabling longer sequences and more parallel samples.</em>
+              </figcaption>
+            </div>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 <!-- Section: Paper abstract -->
 <section class="section hero is-light">
   <div class="container is-fluid">
@@ -184,79 +223,32 @@
   <div class="container is-fluid">
     <div class="columns is-centered">
       <div class="column is-four-fifths">
-          <h2 class="title is-3" style="text-align: center;">
-            <img src="static/images/icons/Llama.png" style="height: 43px; display: inline; vertical-align:text-top;"/>
-            &nbsp; Introduction
-          </h2>
-          <div class="content has-text-justified">
+        <h2 class="title is-3" style="text-align: center;">
+          <img src="static/images/icons/Llama.png" style="height: 43px; display: inline; vertical-align:text-top;"/>
+          &nbsp; Introduction
+        </h2>
+        <div class="content has-text-justified">
+          <div style="background: #ffffff; border-left: 4px solid #4b6cb7; border-radius: 6px; padding: 16px 24px; font-size: 16px; line-height: 1.6; color: #333;">
+            <p>
+              The existing compute-optimal test-time scaling law often favors smaller models with more test-time compute. We revisit this paradigm from a <em style="color: #4b6cb7;">practical efficiency</em> perspective, uncovering that the effectiveness of small models is often <strong style="color: #4b6cb7;">overestimated</strong> due to overlooked <strong style="color: #222;">key-value (KV) memory bottlenecks</strong> introduced by inference strategies such as Best-of-N or long CoT chains.
+            </p>
 
-            <div style="background: #ffffff; border-left: 4px solid #4b6cb7; border-radius: 6px; padding: 16px 24px; font-size: 16px; line-height: 1.6; color: #333;">
-              <p>
-                The existing compute-optimal test-time scaling law usually favors small models with more test-time compute. We rethink these scaling laws from a <em style="color: #4b6cb7;">practical efficiency</em> perspective, revealing that the effectiveness of smaller models is <strong style="color: #4b6cb7;">significantly overestimated</strong>. Prior work, grounded in compute-optimality, overlooks critical <strong style="color: #222;">memory access bottlenecks</strong> introduced by inference-time strategies (e.g., Best-of-N, long chains of thought). 
-              </p>
-              <div style="display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; margin-top: 16px;">
-                <div style="flex: 1 1 55%;">
-                  <h4 class="title is-5">
-                    <img src="static/images/icons/Bolt.png" style="height: 32px; display: inline; vertical-align: middle;"/>
-                    &nbsp;Kinetics Scaling Law
-                  </h4>
-                  <p>
-                    Our holistic analysis, spanning models from <strong>0.6B to 32B parameters</strong>, introduces a new 
-                    <strong><em style="color: #4b6cb7;">Kinetics Scaling Law</em></strong> that guides resource allocation by 
-                    accounting for both computation and memory access. Unlike existing TTS law, we reach the following conclusion:
-                  </p>
-                  <div style="margin-top: 6px; padding: 6px 10px; background-color: #e8f0fe; border-left: 4px solid #4b6cb7; border-radius: 4px; font-weight: 500;">
-                    TTS compute is better allocated toward larger model sizes rather than more generation tokens until a certain parameter threshold (<strong>14B</strong> for Qwen3 series) is reached.
-                  </div>
-                </div>
-                <figure style="flex: 1 1 20%; margin: 0;">
-                  <img src="static/images/F1A.png" alt="Combined Figure 2" style="width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                  <figcaption style="text-align: center; margin-top: 8px; font-size: 14px; color: #555;">
-                    <em>Figure 1: On the AIME24 dataset, the optimal Qwen3 model size wrt the existing scaling law could be upto 3x costlier than the optimal model size wrt the Kinetics scaling law.</em>
-                  </figcaption>
-                </figure>
-              </div>
-              
-            
-              <div style="display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; margin-top: 16px;">
-                <div style="flex: 1 1 55%;">
-                  <h4 class="title is-5">
-                    <img src="static/images/icons/ChatGPT_sparse.png" style="height: 32px; display: inline; vertical-align: middle;"/>
-                    &nbsp;Sparse Scaling Law
-                  </h4>
-                  <p>
-                    KV memory footprint becomes a major bottleneck for TTS. We find that <strong style="color: #4b6cb7;">sparse attention</strong> unlocks greater test-time scalability by reducing per-token cost, thereby enabling <em style="color: #27ae60;">longer generation lengths</em> and <em style="color: #27ae60;">more parallel samples</em> under the same cost budget. Empirically, it yields up to <strong style="color: #27ae60;">60-point</strong> gains in low-cost settings and <strong style="color: #27ae60;">5-point</strong> gains in high-cost regimes on benchmarks like <em>AIME</em> and <em>LiveCodeBench</em>. Thus, sparse attention becomes essential for realizing the full potential of test-time scaling because, unlike training, where parameter scaling saturates, test-time accuracy continues to improve through increased generation.
-                  </p>
+            <p>
+              To address this, we propose the <strong><em style="color: #4b6cb7;">Kinetics Scaling Law</em></strong>, which jointly considers both compute and memory costs. Unlike prior work, it shows that test-time compute is best allocated to scaling model size—up to a threshold (e.g., <strong>14B</strong> parameters for Qwen3)—before increasing generation length. <a href="#figure1" style="color: #2c6eab; text-decoration: underline;">(See Figure 1)</a>
+            </p>
 
-                  <p>
-                    <span style="display: inline-block; margin-top: 6px; padding: 6px 10px; background-color: #e8f0fe; border-left: 4px solid #4b6cb7; border-radius: 4px; font-weight: 500;">Sparse attention emerges as a key enabler for test-time efficiency and can potentially reshape the dense TTS landscape.</span>
-                  </p>
-                </div>
-                <figure style="flex: 1 1 20%; margin: 0;">
-                  <img src="static/images/F1B.png" alt="AIME24 Accuracy vs Trials" style="width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                  <figcaption style="text-align: center; margin-top: 8px; font-size: 14px; color: #555;">
-                    <em>Figure 2: Kinetics Sparse scaling law for Qwen3 series on AIME24 dataset. Here we consider the ideal case of top-k attention with no search overhead.</em>
-                  </figcaption>
-                </figure>
-              </div>
-            </div>
-            
-          
-              <!-- <div style="display: flex; flex-wrap: wrap; justify-content: center;">
-                <div style="width: 45%; min-width: 150px; margin: 5px;">
-                    <canvas id="chart1"></canvas>
-                </div>
-                <div style="width: 45%; min-width: 150px; margin: 5px;">
-                    <canvas id="chart2"></canvas>
-                </div>
-              </div>
-              <script src="static/js/plots/throughput_latency_smaller.js"></script>
-              <br> -->
-            
+            <p>
+              Furthermore, we demonstrate that <strong style="color: #4b6cb7;">sparse attention</strong> unlocks new scaling opportunities by mitigating KV memory overhead, enabling <em style="color: #27ae60;">longer generations</em> and <em style="color: #27ae60;">more parallelism</em> within the same budget. This leads to substantial gains in test-time accuracy and efficiency. <a href="#figure2" style="color: #2c6eab; text-decoration: underline;">(See Figure 2)</a>
+            </p>
+
+            <p>
+              These insights form the foundation of <strong>Kinetics</strong>, a new perspective on scaling that aligns resource allocation more closely with real-world inference constraints.
+            </p>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </section>
 
 <!-- Section: Motivation -->

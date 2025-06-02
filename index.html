@@ -448,7 +448,7 @@
         </h2>
         <div class="content has-text-justified">
           <p>
-            Our cost analysis hints at the importance of attention efficiency in TTS. Our sparse scaling law studies the effectiveness of attention sparsity and how it can further reshape the dense TTS pareto frontier. <em>To see the full potential of sparse attention, we first study <strong>oracle top-k attention</strong> with zero search overhead to simplify the analysis.</em>
+            Our cost analysis hints at the importance of attention efficiency in TTS. Our sparse scaling law studies the effectiveness of attention sparsity and how it can further reshape the dense TTS pareto frontier. <em>To see the full potential of sparse attention, we first study <strong>oracle top-k attention</strong>.</em>
             <h4 style="margin-bottom: 16px;">
               <img src="static/images/icons/Idea.png" style="height: 36px; display: inline; vertical-align: middle;"/>
               &nbsp;Sparse attention significantly enhances problem-solving performance
@@ -483,7 +483,7 @@
               </div>
               <br>
               <p>
-                <strong>Figure 5: Figures 5a and 5d</strong> show that sparse attention significantly improves the cost-accuracy trade-off, enabling higher accuracy at lower compute budgets. 
+                <strong>Figure 5: Figures 5a and 5d</strong> show that sparse attention significantly improves performance and scalability, enabling higher accuracy at lower compute budgets. 
                 <strong>Figures 5b, 5c, 5e, and 5f</strong> highlight that both 8B and 32B models benefit from sparsity, with <em>50–60 percentage point</em> gains in low-cost settings and consistent <em>~5 point</em> improvements even in high-cost regimes. 
                 Notably, sparse models reach these performance levels at much lower costs —for context, 10<sup>5</sup> Tera-eFLOPs is just 22 seconds of B200 usage.
               </p>
@@ -523,7 +523,7 @@
             </h4>
             <div style="background: #ffffff; padding: 24px; font-size: 16px; line-height: 1.6; color: #333;">
               <p>
-                We explore two tractable alternatives to oracle top-k attention: <strong>block top-k attention</strong> and <strong>sliding window attention</strong>. Although sliding window attention is easier to implement and has zero search overhead, its performance is extremely poor. Block top-k attention strikes a good balance between performance and efficiency. 
+                We explore two tractable alternatives to oracle top-k attention: <strong>block top-k attention</strong> and <strong>sliding window attention</strong>. Although sliding window attention is easier to implement and has zero search overhead, its performance is extremely poor. Block top-k attention demonstrates comparable scaling to the oracle top-$k$ attention, improving accuracy by 45 points in the low-cost regime and achieving equivalent accuracy while using $8.58\times$ fewer resources compared to dense attention.. 
               </p>
             
               <!-- Wrap each image + caption in a single div -->
@@ -566,7 +566,7 @@
         </h2>
         <div class="content has-text-justified">
           <p>
-            In this post, we introduced the Kinetics Scaling Law, emphasizing that attention cost, not parameter count, is the dominant factor at test time, fundamentally reshaping the traditional scaling landscape. We further demonstrated that sparse attention is critical for more effective test-time scaling, enabling longer generations and significantly higher accuracy. While our discussion focused on a simple sparse attention algorithm like block top-k attention, we anticipate that more advanced algorithms will approach oracle top-k scaling. We also expect that future test-time scaling (TTS) strategies will benefit from our insights into sparse scaling. Overall, we believe the Kinetics Scaling Law serves as a guiding principle for end-to-end design in LLM serving, agent systems, and reinforcement learning environments.
+            In this post, we introduced the Kinetics Scaling Law, emphasizing that attention cost, not parameter count, is the dominant factor at test time, fundamentally reshaping the traditional scaling landscape. We further demonstrated that sparse attention is crucial for achieving more effective and scalable test-time scaling. While our discussion focused on a simple sparse attention algorithm like block top-k attention, we anticipate that more advanced algorithms will approach or even outperform oracle top-k scaling. Moreover, sparse attention drastically reduces inference cost, enabling more reasoning trials and longer generations. This unlocks greater flexibility in configuring TTS strategies within a fixed resource.  Overall, we believe the Kinetics Scaling Law serves as a guiding principle for end-to-end design in agent deployment, model architectures, LLM serving systems, and hardware.
           </p>
         </div>
         <div class="has-text-centered">

@@ -1,11 +1,16 @@
 # Kinetics: Rethinking Test-Time Scaling Laws
 This repository provides the accompanying code for [Kinetics: Rethinking Test-Time Scaling Laws](https://arxiv.org/abs/2408.11049) [[Blog]](https://infini-ai-lab.github.io/Kinetics-PR/)
 
+### TL;DR
+We introduce **Kinetics**, which challenges the traditional test-time scaling (TTS) laws by adopting a *practical efficiency* perspective. It reveals that prior compute-optimal approaches overlook major *key-value memory access bottlenecks* in various TTS strategies. By jointly considering memory and compute, the **Kinetics scaling law** shows that it is more efficient to scale model size up to a threshold before investing more compute in test-time scaling. Motivated by this, we propose a new scaling paradigm centered on **sparse attention**, which lowers per-token cost and enables longer generations and more parallel samples within the same resource budget. 
+
 We provide AIME24 and AIME25 reasoning traces for Qwen3 model series and its sparse attention variants through [Huggingface](https://huggingface.co/datasets/InfiniAILab/Kinetics-generations)
 
 In this codebase, we provide,
 1. eFLOPs-based cost model analysis
-2. Block Top-K attention speed-up demonstration
+2. Comparison of previous and Kinetics scaling law
+3. Comparison of dense and sparse scaling law based on eFLOPs based cost model
+4. Block Top-K attention speed-up demonstration
 
 ## Repository Structure
 The repository is organized as follows,

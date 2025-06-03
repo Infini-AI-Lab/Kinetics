@@ -78,7 +78,8 @@ def make_process_fn(model_name, query_to_id, gen_lens):
 
 if __name__ == "__main__":
     E_flops = 562.5
-    task = "aime24"
+    task = sys.argv[1]
+    sparse_arg = sys.argv[2]
     
     model_sizes = {
         "0.6B": 0.752,
@@ -90,7 +91,6 @@ if __name__ == "__main__":
     }
     gen_lens = [2048, 4096, 6144, 8192, 10240, 12288, 14336, 16384, 18432, 20480, 22528, 24576, 26624, 28672, 30720, 32768]
    
-    sparse_arg = sys.argv[1]
     query_to_id = {}
     query_id = 0
     

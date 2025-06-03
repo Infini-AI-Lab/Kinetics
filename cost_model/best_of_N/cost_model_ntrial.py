@@ -121,7 +121,8 @@ if __name__ == "__main__":
         "32B": 32.76
     }
     
-    sparse_arg = sys.argv[1]
+    task = sys.argv[1]
+    sparse_arg = sys.argv[2]
     res_dir = f"{task}/{sparse_arg}"
     
     for model in ["Qwen3-32B", "Qwen3-14B", "Qwen3-8B", "Qwen3-4B", "Qwen3-1.7B", "Qwen3-0.6B"]:   

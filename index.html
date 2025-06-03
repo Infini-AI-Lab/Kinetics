@@ -238,11 +238,11 @@
             </p>
 
             <p>
-              Furthermore, we demonstrate that <strong style="color: #4b6cb7;">sparse attention</strong> unlocks new scaling opportunities by mitigating KV memory overhead, enabling <em style="color: #27ae60;">longer generations</em> and <em style="color: #27ae60;">more parallel reasoning trials</em> within the same budget. Empirical results suggest that sparse attention is essential for realizing the full potential of test-time scaling because, unlike training, where parameter scaling saturates, test-time accuracy continues to improve through increased generation.  <a href="#figure2" style="color: #2c6eab; text-decoration: underline;">(See Figure 2)</a>
+              Furthermore, we demonstrate that <strong style="color: #4b6cb7;">sparse attention</strong> unlocks new scaling opportunities by mitigating KV memory overhead, enabling <em style="color: #27ae60;">longer generations</em> and <em style="color: #27ae60;">more parallel reasoning trials</em> within the same budget. Empirically, we demonstrate that sparse attention models consistently outperform their dense counterparts, achieving gains of over 60 points in low-cost regimes and more than 5 points in high-cost regimes for problem-solving accuracy on AIME and LiveCodeBench, encompassing evaluations on state-of-the-art MoEs. <a href="#figure2" style="color: #2c6eab; text-decoration: underline;">(See Figure 2)</a>
             </p>
 
             <p>
-              These insights form the foundation of <strong>Kinetics</strong>, a new perspective on scaling that aligns resource allocation more closely with real-world inference constraints.
+              Our findings suggest that sparse attention is essential for realizing the full potential of test-time scaling because, unlike training, where parameter scaling saturates, test-time accuracy continues to improve through increased generation.
             </p>
           </div>
         </div>

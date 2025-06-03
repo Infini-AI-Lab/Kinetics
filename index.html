@@ -238,7 +238,7 @@
             </p>
 
             <p>
-              Furthermore, we demonstrate that <strong style="color: #4b6cb7;">sparse attention</strong> unlocks new scaling opportunities by mitigating KV memory overhead, enabling <em style="color: #27ae60;">longer generations</em> and <em style="color: #27ae60;">more parallelism</em> within the same budget. This leads to substantial gains in test-time accuracy and efficiency. <a href="#figure2" style="color: #2c6eab; text-decoration: underline;">(See Figure 2)</a>
+              Furthermore, we demonstrate that <strong style="color: #4b6cb7;">sparse attention</strong> unlocks new scaling opportunities by mitigating KV memory overhead, enabling <em style="color: #27ae60;">longer generations</em> and <em style="color: #27ae60;">more parallel reasoning trials</em> within the same budget. This leads to substantial gains in test-time accuracy and efficiency. <a href="#figure2" style="color: #2c6eab; text-decoration: underline;">(See Figure 2)</a>
             </p>
 
             <p>
@@ -523,7 +523,7 @@
             </h4>
             <div style="background: #ffffff; padding: 24px; font-size: 16px; line-height: 1.6; color: #333;">
               <p>
-                We explore two tractable alternatives to oracle top-k attention: <strong>block top-k attention</strong> and <strong>sliding window attention</strong>. Although sliding window attention is easier to implement and has zero search overhead, its performance is extremely poor. Block top-k attention demonstrates comparable scaling to the oracle top-$k$ attention, improving accuracy by 45 points in the low-cost regime and achieving equivalent accuracy while using $8.58\times$ fewer resources compared to dense attention.. 
+                We explore two tractable alternatives to oracle top-k attention: <strong>block top-k attention</strong> and <strong>sliding window attention</strong>. Although sliding window attention is easier to implement and has zero search overhead, its performance is extremely poor. Block top-k attention demonstrates comparable scaling to the oracle top-k attention, improving accuracy by 45 points in the low-cost regime and achieving equivalent accuracy while using 8.58X fewer resources compared to dense attention.. 
               </p>
             
               <!-- Wrap each image + caption in a single div -->

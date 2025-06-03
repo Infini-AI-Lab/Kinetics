@@ -1,5 +1,5 @@
 # Kinetics: Rethinking Test-Time Scaling Laws
-[Paper](https://arxiv.org/abs/2408.11049) | [Blog](https://infini-ai-lab.github.io/Kinetics/)
+[Paper](https://arxiv.org/abs/2408.11049) | [Blog](https://infini-ai-lab.github.io/Kinetics-PR/)
 ## TL;DR
 Kinetics scaling law challenges the existing Test-time Scaling laws by adopting a practical efficiency perspective. Kinetics also promotes sparse attention to establish a better trade-off between accuracy and inference-scaling cost.
 

@@ -31,6 +31,16 @@ Kinetics/
 - `cost_model/`: contains code to perform eFLOPs-based cost analysis for two different inference-scaling strategies - best of N and long CoT.
 - `benchmark/`: contains code for benchmarking the task throughput with block top-k and dense attention-based model. 
 
+### Installation
+```
+conda create -n kinetics python=3.11
+conda activate kinetics
+
+# install flashinfer v0.1.6
+wget https://github.com/flashinfer-ai/flashinfer/releases/download/v0.1.6/flashinfer-0.1.6+cu124torch2.4-cp311-cp311-linux_x86_64.whl#sha256=19a01e2ec93662bc6b83819daaae277d93e7cc989343c5f8940af44a4cb66ba0
+pip install -r requirements.txt
+```
+
 ### Usage
 Download the reasoning traces from [Huggingface](https://huggingface.co/datasets/InfiniAILab/Kinetics-generations)
 

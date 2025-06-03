@@ -1,5 +1,5 @@
 # Kinetics: Rethinking Test-Time Scaling Laws
-This repository provides the accompanying code for [Kinetics: Rethinking Test-Time Scaling Laws](https://arxiv.org/abs/2408.11049) [[Blog]](https://infini-ai-lab.github.io/Kinetics/)
+This repository provides the accompanying code for [Kinetics: Rethinking Test-Time Scaling Laws](https://arxiv.org/abs/2408.11049) [[Blog]](https://infini-ai-lab.github.io/Kinetics-PR/)
 
 We provide AIME24 and AIME25 reasoning traces for Qwen3 model series and its sparse attention variants through [Huggingface](https://huggingface.co/datasets/InfiniAILab/Kinetics-generations)
 

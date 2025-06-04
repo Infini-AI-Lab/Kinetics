@@ -79,7 +79,7 @@ def main():
     print(f"Page size: {args.page_size}")
     print(f"Topk pages: {args.topk_page}")
     print(f"Batch size: {args.batch_size}")
-    print(f"Throughput: {throughput:.2f} tokens/sec")
+    print(f"Throughput: {throughput/(args.world_size * config.num_hidden_layers):.2f} tokens/sec")
 
 if __name__ == "__main__":
     main()

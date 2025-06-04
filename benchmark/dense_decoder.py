@@ -14,7 +14,7 @@ torch._functorch.config.enable_autograd_cache = True
 torch._dynamo.config.verbose = True
 torch._dynamo.config.suppress_errors = False
 
-from model_utils import apply_rotary_pos_emb, layer_norm, qk_norm
+from model_utils import layer_norm, qk_norm
 from transformers.activations import ACT2FN
 from transformers import AutoConfig
 import sys
@@ -233,49 +233,3 @@ class DecoderLayer(nn.Module):
         hidden_states = residual + hidden_states
         return hidden_states
         
-model = sys.argv[1]
-gen_len = int(sys.argv[2])
-            
-config = AutoConfig.from_pretrained(model)
-hidden_size = config.hidden_size
-num_layers = config.num_hidden_layers
-batch_size = 4096
-max_len = 32768
-prefix_len = (1024 + gen_len) // 2
-page_size = 64
-hidden_states = torch.randn(batch_size, 1, hidden_size, device="cuda", dtype=torch.bfloat16)
-
-decoder_layer = DecoderLayer(
-    config, world_size=8,
-    batch_size=batch_size,
-    prefix_len=prefix_len,
-    max_len=max_len,
-    page_size=page_size,
-    device="cuda",
-    dtype=torch.bfloat16
-)   
-
-decoder_layer.apply(init_weights)
-decoder_layer.eval()
-decoder_layer.to("cuda", dtype=torch.bfloat16)
-
-decoder_layer.forward = torch.compile(decoder_layer.forward, mode="max-autotune", fullgraph=True)
-        
-decoder_layer.prepare_wrapper()
-
-Repeat_Time = 256
-# warmup
-for i in range(200):
-    output = decoder_layer(hidden_states.clone())
-        
-torch.cuda.synchronize()
-start_time = time.time()
-for i in range(Repeat_Time):
-    output = decoder_layer(hidden_states.clone())
-torch.cuda.synchronize()
-end_time = time.time()
-throughput = (Repeat_Time * batch_size) / (end_time - start_time)
-print(f"Model: {model.split('/')[-1]}")
-print(f"Prefix length: {prefix_len}")
-print(f"Throughput: {throughput} tokens/sec")
-

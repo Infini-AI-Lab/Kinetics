@@ -5,4 +5,3 @@ lighteval==0.10.0
 lm_eval==0.4.8
 matplotlib==3.7.0
 torch==2.5.1
-flashinfer-0.1.6+cu124torch2.4-cp311-cp311-linux_x86_64.whl

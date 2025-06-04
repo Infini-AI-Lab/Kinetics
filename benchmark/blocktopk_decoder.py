@@ -1,3 +1,4 @@
+import sys
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -5,6 +6,7 @@ import flashinfer
 from einops import rearrange
 import time
 import math
+from tqdm import tqdm
 import torch._dynamo
 import torch._inductor.config
 torch._inductor.config.coordinate_descent_tuning = True
@@ -14,10 +16,10 @@ torch._functorch.config.enable_autograd_cache = True
 torch._dynamo.config.verbose = True
 torch._dynamo.config.suppress_errors = False
 
-from model_utils import apply_rotary_pos_emb, layer_norm, qk_norm
+from model_utils import layer_norm, qk_norm
 from transformers.activations import ACT2FN
 from transformers import AutoConfig
-import sys
+
 torch.library.define(
     "mylib::update_kv",
     "(Tensor k, Tensor v, Tensor kv_append_indptr, Tensor(a!) kv_cache, Tensor kv_page_indices, Tensor kv_page_indptr, Tensor cachelen) -> ()",
@@ -91,9 +93,9 @@ def init_weights(m):
             bound = 1 / math.sqrt(fan_in)
             nn.init.uniform_(m.bias, -bound, bound)
 
-class DecoderLayer(nn.Module):
+class BlockTopkDecoderLayer(nn.Module):
     def __init__(self, config, world_size,
-                 batch_size, prefix_len, max_len, page_size, 
+                 batch_size, prefix_len, max_len, page_size, topk_page, 
                  device, dtype):
         super().__init__()
         self.num_heads = config.num_attention_heads // world_size
@@ -129,17 +131,19 @@ class DecoderLayer(nn.Module):
         self.batch_size = batch_size
         self.prefix_len = prefix_len
         self.page_size = page_size
+        self.topk_page = topk_page
         self.device = device
         self.dtype = dtype
         
         # setup flashinfer buffers and KV Cache
         max_num_pages = max_len // page_size
-        num_pages_per_req = prefix_len // page_size
+        self.num_pages_per_req = num_pages_per_req = prefix_len // page_size
         paged_kv_indices = torch.arange(num_pages_per_req + 1, dtype=torch.int32, device=device) * batch_size + torch.arange(batch_size, dtype=torch.int32, device=device)[:, None]
         self.paged_kv_indices = paged_kv_indices.view(-1)
+        topk_page_indices = torch.empty(batch_size * (topk_page + 1), dtype=torch.int32, device=device)
         self.paged_kv_indptr = torch.cat([
             torch.zeros(1, dtype=torch.int32, device=device),
-            torch.cumsum(torch.full((batch_size,), num_pages_per_req + 1, dtype=torch.int32, device=device), dim=0)
+            torch.cumsum(torch.full((batch_size,), topk_page + 1, dtype=torch.int32, device=device), dim=0)
         ]).to(torch.int32)
         
         self.last_kv_lens = torch.zeros(batch_size, dtype=torch.int32, device=device)
@@ -150,13 +154,17 @@ class DecoderLayer(nn.Module):
             workspace_buffer, "NHD",
             use_tensor_cores=True,
             use_cuda_graph=True,
-            paged_kv_indices_buffer=self.paged_kv_indices,
+            paged_kv_indices_buffer=topk_page_indices,
             paged_kv_indptr_buffer=self.paged_kv_indptr,
             paged_kv_last_page_len_buffer=self.last_kv_lens
         )
         self.kv_cache = torch.randn(
             max_num_pages * batch_size, 2, page_size, 
             self.num_kv_heads, self.head_dim, dtype=dtype, device=device
+        )
+        assert self.num_kv_heads == 1, "only support single kv head for now"
+        self.compressed_key_cache = torch.randn(
+            batch_size, num_pages_per_req, self.head_dim, dtype=dtype, device=device
         )
         
         # register decode_wrapper run functions
@@ -175,19 +183,6 @@ class DecoderLayer(nn.Module):
         
         self.decode_run = torch.ops.mylib.decode
         
-    def prepare_wrapper(self):
-        self.decode_wrapper.plan(
-            self.paged_kv_indptr,
-            self.paged_kv_indices,
-            self.last_kv_lens,
-            self.num_heads,
-            self.num_kv_heads,
-            self.head_dim,
-            self.page_size,
-            pos_encoding_mode="NONE",
-            data_type="float16"
-        )
-        
     @torch.inference_mode()
     def forward(self, 
         hidden_states,
@@ -203,16 +198,27 @@ class DecoderLayer(nn.Module):
         query_states, key_states, value_states = proj.split(split_sizes, dim=-1)
         query_states = query_states.view(bsz, q_len, self.num_heads, self.head_dim).contiguous()
         key_states = key_states.view(bsz, q_len, self.num_kv_heads, self.head_dim).contiguous()
-        value_states = value_states.view(bsz, q_len, self.num_kv_heads, self.head_dim).squeeze(dim=1).contiguous()
+        value_states = value_states.view(bsz, self.num_kv_heads, self.head_dim).contiguous()
         
-        query_states = torch.ops.mylib.qk_norm(query_states, self.qnorm_variance_epsilon, self.qnorm_weight).squeeze(dim=1)
-        key_states = torch.ops.mylib.qk_norm(key_states, self.knorm_variance_epsilon, self.knorm_weight).squeeze(dim=1)
+        query_states = torch.ops.mylib.qk_norm(query_states, self.qnorm_variance_epsilon, self.qnorm_weight)
+        key_states = torch.ops.mylib.qk_norm(key_states, self.knorm_variance_epsilon, self.knorm_weight)
+        
+        query_states = query_states.reshape(bsz, self.num_heads, self.head_dim).contiguous()
+        key_states = key_states.reshape(bsz, self.num_kv_heads, self.head_dim).contiguous()
         
         torch.ops.mylib.update_kv(
             key_states, value_states, self.qkv_indptr,
             self.kv_cache,
             self.paged_kv_indices, self.paged_kv_indptr, self.last_kv_lens
         )
+        
+        # find topk page indices
+        csim = torch.einsum("b g d, b n d -> b g n", query_states, self.compressed_key_cache).mean(dim=1)
+        topk_page_indices = torch.topk(csim, self.topk_page, dim=-1).indices
+        topk_page_indices = topk_page_indices * bsz + torch.arange(bsz, device=self.device)[:, None]
+        topk_page_indices = self.paged_kv_indices[topk_page_indices]
+        topk_page_indices = torch.cat([topk_page_indices, torch.arange(0, bsz, device=self.device)[:, None] + self.num_pages_per_req * bsz], dim=-1)
+        topk_page_indices = topk_page_indices.view(-1).to(torch.int32).contiguous()
         
         o = self.decode_run(
             query_states, self.kv_cache
@@ -232,50 +238,29 @@ class DecoderLayer(nn.Module):
         
         hidden_states = residual + hidden_states
         return hidden_states
+    
+    
+    def prepare_wrapper(self, prefix_len, topk_page_indices=None):
+        if topk_page_indices is None:
+            topk_page_indices = torch.stack([
+                    torch.cat([
+                    torch.randint(0, self.num_pages_per_req, (self.topk_page,), dtype=torch.int32, device="cuda"),
+                    torch.full((1,), self.num_pages_per_req, dtype=torch.int32, device="cuda"),
+                ], dim=0)
+                for _ in range(self.batch_size)
+            ], dim=0)
+            topk_page_indices = topk_page_indices * self.batch_size + torch.arange(self.batch_size, device="cuda")[:, None]
+            topk_page_indices = topk_page_indices.view(-1).to(torch.int32).contiguous()
         
-model = sys.argv[1]
-gen_len = int(sys.argv[2])
-            
-config = AutoConfig.from_pretrained(model)
-hidden_size = config.hidden_size
-num_layers = config.num_hidden_layers
-batch_size = 4096
-max_len = 32768
-prefix_len = (1024 + gen_len) // 2
-page_size = 64
-hidden_states = torch.randn(batch_size, 1, hidden_size, device="cuda", dtype=torch.bfloat16)
-
-decoder_layer = DecoderLayer(
-    config, world_size=8,
-    batch_size=batch_size,
-    prefix_len=prefix_len,
-    max_len=max_len,
-    page_size=page_size,
-    device="cuda",
-    dtype=torch.bfloat16
-)   
-
-decoder_layer.apply(init_weights)
-decoder_layer.eval()
-decoder_layer.to("cuda", dtype=torch.bfloat16)
-
-decoder_layer.forward = torch.compile(decoder_layer.forward, mode="max-autotune", fullgraph=True)
+        self.decode_wrapper.plan(
+            self.paged_kv_indptr,
+            topk_page_indices,
+            self.last_kv_lens,
+            self.num_heads,
+            self.num_kv_heads,
+            self.head_dim,
+            self.page_size,
+            pos_encoding_mode="NONE",
+            data_type="float16"
+        )
         
-decoder_layer.prepare_wrapper()
-
-Repeat_Time = 256
-# warmup
-for i in range(200):
-    output = decoder_layer(hidden_states.clone())
-        
-torch.cuda.synchronize()
-start_time = time.time()
-for i in range(Repeat_Time):
-    output = decoder_layer(hidden_states.clone())
-torch.cuda.synchronize()
-end_time = time.time()
-throughput = (Repeat_Time * batch_size) / (end_time - start_time)
-print(f"Model: {model.split('/')[-1]}")
-print(f"Prefix length: {prefix_len}")
-print(f"Throughput: {throughput} tokens/sec")
-

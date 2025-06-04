@@ -271,8 +271,8 @@ topk_page = int(sys.argv[4])
 
 config = AutoConfig.from_pretrained(model)
 hidden_size = config.hidden_size
-prefix_len = (1024 + gen_len) // 2
-batch_size = 4096
+prefix_len = (gen_len) // 2
+batch_size = 256
 max_len = 32768
 num_layers = config.num_hidden_layers
 hidden_states = torch.randn(batch_size, 1, hidden_size, device="cuda", dtype=torch.bfloat16)
@@ -296,50 +296,21 @@ decoder_layer.forward = torch.compile(decoder_layer.forward, mode="max-autotune"
         
 decoder_layer.prepare_wrapper(prefix_len)
 
+
+Repeat_Time = 256
 # warmup
 for i in range(200):
     output = decoder_layer(hidden_states.clone())
         
 torch.cuda.synchronize()
 start_time = time.time()
-for i in range(60, 64):
+for i in range(Repeat_Time):
     output = decoder_layer(hidden_states.clone())
 torch.cuda.synchronize()
 end_time = time.time()
-time_taken = (end_time - start_time) * gen_len / 4 * num_layers
+throughput = (Repeat_Time * batch_size) / (end_time - start_time)
 print(f"Model: {model.split('/')[-1]}")
 print(f"Prefix length: {prefix_len}")
 print(f"Topk page: {topk_page}")
 print(f"Page size: {page_size}")
-print(f"Task throughput: {batch_size / time_taken} tasks/s")
-
-# total_time = 0
-    
-# for dynamic_prefix_len in tqdm(range(prefix_len, prefix_len + gen_len, 128)):
-#     decoder_layer.prepare_wrapper(dynamic_prefix_len)
-#     torch.cuda.synchronize()
-#     start_time = time.time()
-#     for i in range(10):
-#         hidden_states = all_hidden_states[i].clone()
-#         output = decoder_layer(hidden_states)
-#     torch.cuda.synchronize()
-#     end_time = time.time()
-#     total_time += (end_time - start_time) / 10
-    
-# print(f"model: {model}")
-# print(f"generation_length: {gen_len}")
-# print(f"page_size: {page_size}")
-# print(f"topk_page: {topk_page}")
-# print(f"Time taken: {total_time * 128:.4f} s")
-
-# torch.cuda.synchronize()
-# torch.profiler._utils._init_for_cuda_graphs()
-# with torch.profiler.profile(
-#     activities=[torch.profiler.ProfilerActivity.CPU, torch.profiler.ProfilerActivity.CUDA],
-#     record_shapes=True,
-#     profile_memory=True,
-#     with_stack=True,
-# ) as prof:
-#     output = decoder_layer(hidden_states.clone())
-    
-# prof.export_chrome_trace(f"block_topk_decoder_layer_trace_{model.split('/')[-1]}_{page_size}_{topk_page}.json")
+print(f"Throughput: {throughput} tokens/sec")

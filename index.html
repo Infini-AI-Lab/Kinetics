@@ -238,7 +238,7 @@
             </p>
 
             <p>
-              Furthermore, we demonstrate that <strong style="color: #4b6cb7;">sparse attention</strong> unlocks new scaling opportunities by mitigating KV memory overhead, enabling <em style="color: #27ae60;">longer generations</em> and <em style="color: #27ae60;">more parallel reasoning trials</em> within the same budget. This leads to substantial gains in test-time accuracy and efficiency. <a href="#figure2" style="color: #2c6eab; text-decoration: underline;">(See Figure 2)</a>
+              Furthermore, we demonstrate that <strong style="color: #4b6cb7;">sparse attention</strong> unlocks new scaling opportunities by mitigating KV memory overhead, enabling <em style="color: #27ae60;">longer generations</em> and <em style="color: #27ae60;">more parallel reasoning trials</em> within the same budget. This leads to substantial gains in test-time accuracy and efficiency. Empirically, we show that sparse attention models consistently outperform dense counterparts, achieving over <strong style="color: #27ae60;">60 points</strong> gains in low-cost regimes and over <strong style="color: #27ae60;">5 points</strong> gains in high-cost regimes for problem-solving accuracy on <em style="color: #27ae60;">AIME</em>, encompassing evaluations on state-of-the-art MoEs. <a href="#figure2" style="color: #2c6eab; text-decoration: underline;">(See Figure 2)</a>. <em>These results suggest that sparse attention is essential for realizing the full potential of test-time scaling because, unlike training—where parameter scaling saturates, test-time accuracy continues to improve through increased generation.</em>
             </p>
 
             <p>
@@ -499,15 +499,13 @@
                 <div style="flex: 1 1 55%;">
                   
                   <p>
-                    <!-- We saw before that as model size increases, the <strong>KV memory footprint grows slowly</strong>, making larger models relatively more efficient in memory usage.
-                    However, with <strong>KV sparsification</strong>, the criticality of this memory footprint is relaxed as the <strong style="color: #2f8f5b;">optimal KV cache budget increases very gradually with cost budget</strong>.  -->
-                    To see how big of a role attention sparsity can have, we include KV sparsification into the list of TTS variables. Our trade-off analysis between KV sparsity and other TTS variables like CoT length and number of trials reveals that,
+                    To understand the importance of attention sparsity, we include KV sparsification into the list of TTS variables. Our holistic analysis reveals that,
                     <p>
                     <span style="display: block; background-color: #e6f0fb; border-left: 4px solid #4b6cb7; padding: 12px 16px; border-radius: 6px;">
                       With increasing cost budget, it is more beneficial to scale generation tokens than KV cache budget.
                     </span>
                     </p>
-                    In other words, a smaller KV cache budget is usually sufficient for satisfactory performance. Furthermore, <strong style="color: #2f8f5b;">it allows us to generate more tokens at the same cost budget</strong>. Importantly, the original <em>quadratic</em> cost scaling with generation length is replaced by a <em>linear dependency</em>, significantly reducing cost for longer generations.
+                    In other words, optimal KV cache budget changes very slowly with increasing cost budget. Consequently, <strong style="color: #2f8f5b;">it allows us to generate substantiallymore tokens at the same cost budget, resulting in higher performance</strong>. Importantly, the original <em>quadratic</em> cost scaling with generation length is replaced by a <em>linear dependency</em>, significantly reducing cost for longer generations.
                   </p>
                 </div>
                 <div style="flex: 1 1 40%; text-align: center;">
@@ -587,7 +585,7 @@
             <h2 class="title">BibTeX</h2>
             <pre><code>@misc{chen2024magicdecbreakinglatencythroughputtradeoff,
               title={Kinetics: Rethinking Test-Time Scaling Laws}, 
-              author={Ranajoy Sadhukhan and Zhuoming Chen and Yang Zhou and Emma Strubell and Beidi Chen},
+              author={Ranajoy Sadhukhan and Zhuoming Chen and Haizhong Zheng and Yang Zhou and Emma Strubell and Beidi Chen},
               year={2024},
               eprint={2408.11049},
               archivePrefix={arXiv},

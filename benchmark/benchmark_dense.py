@@ -14,7 +14,7 @@ torch._functorch.config.enable_autograd_cache = True
 torch._dynamo.config.verbose = True
 torch._dynamo.config.suppress_errors = False
 
-from model_utils import apply_rotary_pos_emb, layer_norm, qk_norm
+from model_utils import layer_norm, qk_norm
 from transformers.activations import ACT2FN
 from transformers import AutoConfig
 import sys
@@ -239,7 +239,7 @@ gen_len = int(sys.argv[2])
 config = AutoConfig.from_pretrained(model)
 hidden_size = config.hidden_size
 num_layers = config.num_hidden_layers
-batch_size = 4096
+batch_size = 256
 max_len = 32768
 prefix_len = (1024 + gen_len) // 2
 page_size = 64

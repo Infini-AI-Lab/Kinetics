@@ -140,7 +140,7 @@ class BlockTopkDecoderLayer(nn.Module):
         self.num_pages_per_req = num_pages_per_req = prefix_len // page_size
         paged_kv_indices = torch.arange(num_pages_per_req + 1, dtype=torch.int32, device=device) * batch_size + torch.arange(batch_size, dtype=torch.int32, device=device)[:, None]
         self.paged_kv_indices = paged_kv_indices.view(-1)
-        topk_page_indices = torch.empty(batch_size * (topk_page + 1), dtype=torch.int32, device=device)
+        self.topk_page_indices = torch.empty(batch_size * (topk_page + 1), dtype=torch.int32, device=device)
         self.paged_kv_indptr = torch.cat([
             torch.zeros(1, dtype=torch.int32, device=device),
             torch.cumsum(torch.full((batch_size,), topk_page + 1, dtype=torch.int32, device=device), dim=0)
@@ -154,7 +154,7 @@ class BlockTopkDecoderLayer(nn.Module):
             workspace_buffer, "NHD",
             use_tensor_cores=True,
             use_cuda_graph=True,
-            paged_kv_indices_buffer=topk_page_indices,
+            paged_kv_indices_buffer=self.topk_page_indices,
             paged_kv_indptr_buffer=self.paged_kv_indptr,
             paged_kv_last_page_len_buffer=self.last_kv_lens
         )
@@ -218,7 +218,7 @@ class BlockTopkDecoderLayer(nn.Module):
         topk_page_indices = topk_page_indices * bsz + torch.arange(bsz, device=self.device)[:, None]
         topk_page_indices = self.paged_kv_indices[topk_page_indices]
         topk_page_indices = torch.cat([topk_page_indices, torch.arange(0, bsz, device=self.device)[:, None] + self.num_pages_per_req * bsz], dim=-1)
-        topk_page_indices = topk_page_indices.view(-1).to(torch.int32).contiguous()
+        self.topk_page_indices = topk_page_indices.view(-1).to(torch.int32).contiguous()
         
         o = self.decode_run(
             query_states, self.kv_cache

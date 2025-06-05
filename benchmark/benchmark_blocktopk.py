@@ -16,7 +16,7 @@ torch._functorch.config.enable_autograd_cache = True
 torch._dynamo.config.verbose = True
 torch._dynamo.config.suppress_errors = False
 
-from model_utils import apply_rotary_pos_emb, layer_norm, qk_norm
+from model_utils import layer_norm, qk_norm
 from transformers.activations import ACT2FN
 from transformers import AutoConfig
 
@@ -250,11 +250,11 @@ class BlockTopkDecoderLayer(nn.Module):
                 for _ in range(self.batch_size)
             ], dim=0)
             topk_page_indices = topk_page_indices * self.batch_size + torch.arange(self.batch_size, device="cuda")[:, None]
-            topk_page_indices = topk_page_indices.view(-1).to(torch.int32).contiguous()
+            self.topk_page_indices = topk_page_indices.view(-1).to(torch.int32).contiguous()
         
         self.decode_wrapper.plan(
             self.paged_kv_indptr,
-            topk_page_indices,
+            self.topk_page_indices,
             self.last_kv_lens,
             self.num_heads,
             self.num_kv_heads,

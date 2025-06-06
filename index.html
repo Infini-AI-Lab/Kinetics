@@ -557,7 +557,8 @@ strategies rather than reducing sparsity.
                       Our analysis reveals a consistent trend: allocating additional compute toward generating more tokens is generally more effective than expanding the KV cache.
                     </span>
                     </p>
-                    In Best-of-N frontier, doubling the cost leads to only a 1.18× increase in KV budget, compared to a 1.74× increase in total generated tokens.
+                    In Best-of-N frontier, doubling the cost leads to only a 1.18× increase in KV budget, compared to a 1.74× increase in total generated tokens. This trend indicates that, as more computing is invested at test time, high sparsity becomes
+increasingly critical to fully leverage the benefits of these strategies.
                   </p>
                 </div>
                 <div style="flex: 1 1 40%; text-align: center;">

@@ -253,6 +253,54 @@
   </div>
 </section>
 
+  <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Note Box</title>
+  <style>
+    .note-box {
+      border: 3px solid #a57bb3;
+      border-radius: 10px;
+      padding: 1.2em;
+      background-color: #fefefe;
+      position: relative;
+      font-family: "Georgia", serif;
+      max-width: 800px;
+      margin: 2em auto;
+      line-height: 1.6;
+    }
+
+    .note-box::before {
+      content: "Note";
+      position: absolute;
+      top: -1.4em;
+      left: 0;
+      background-color: #a57bb3;
+      color: white;
+      padding: 0.4em 1em;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    em {
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="note-box">
+    Advanced test-time strategies shift evaluation from token-centric metrics (e.g., perplexity, latency) to
+    <em>task-level throughput</em>—the number of tasks completed per unit time. This shift is especially relevant for
+    reasoning tasks, where intermediate steps may vary widely depending on the strategy, yet the ultimate utility hinges
+    almost entirely on the correctness of the final output. In contrast, traditional tasks like chat completions focus
+    on token-level quality and throughput.
+  </div>
+
+</body>
+  
 <!-- Section: Motivation -->
 <section class="section hero is-light">
   <div class="container is-fluid">

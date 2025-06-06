@@ -19,8 +19,8 @@ We introduce **Kinetics**, which challenges the traditional test-time scaling (T
 
 <table>
 <tr>
-<td> <img src="assets/F1A.png" align="top"/>
-<td> <img src="assets/F1B.png" align="top"/>
+<td> <img src="assets/F1A.png" style="width:400px;" align="top"/>
+<td> <img src="assets/F1B.png" style="width:380px;" align="top"/>
 </tr>
 <caption>
 On AIME24, compute-optimal model choices can be up to <strong>3×</strong> costlier than those guided by the Kinetics scaling law. More interestingly, Sparse attention unlocks stronger scaling by enabling longer sequences and more parallel samples.

@@ -1,5 +1,5 @@
 # Kinetics: Rethinking Test-Time Scaling Laws
-This repository provides the accompanying code for [Kinetics: Rethinking Test-Time Scaling Laws](https://arxiv.org/abs/2408.11049) [[Blog]](https://infini-ai-lab.github.io/Kinetics-PR/)
+This repository provides the accompanying code for [Kinetics: Rethinking Test-Time Scaling Laws](https://arxiv.org/abs/2408.11049) [[Blog]](https://infini-ai-lab.github.io/Kinetics/)
 
 ### TL;DR
 We introduce **Kinetics**, which challenges the traditional test-time scaling (TTS) laws by adopting a *practical efficiency* perspective. It reveals that prior compute-optimal approaches overlook major *key-value memory access bottlenecks* in various TTS strategies. By jointly considering memory and compute, the **Kinetics scaling law** shows that it is more efficient to scale model size up to a threshold before investing more compute in test-time scaling. Motivated by this, we propose a new scaling paradigm centered on **sparse attention**, which lowers per-token cost and enables longer generations and more parallel samples within the same resource budget. 
@@ -96,4 +96,5 @@ python3 benchmark/benchmark_blocktopk.py <model>
 ```
 
 ### TODOs
-- [ ] Add SGLang based evaluation 
+- [ ] Block TopK Attention + Paged Attention Kernels
+- [ ] Integration into SGLang  

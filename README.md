@@ -22,7 +22,7 @@ We rethink test-time scaling laws from a *practical efficiency* perspective, rev
 ```bibtex
 @misc{chen2024magicdecbreakinglatencythroughputtradeoff,
   title={Kinetics: Rethinking Test-Time Scaling Laws},
-  author={Ranajoy Sadhukhan and Zhuoming Chen and Yang Zhou and Emma Strubell and Beidi Chen},
+  author={Ranajoy Sadhukhan and Zhuoming Chen and Haizhong Zheng and Yang Zhou and Emma Strubell and Beidi Chen},
   year={2024},
   eprint={2408.11049},
   archivePrefix={arXiv},

@@ -3,7 +3,7 @@ import time
 import torch
 import torch.nn as nn
 from transformers import AutoConfig
-from dense_decoder import DecoderLayer, init_weights  # 将 DecoderLayer 拆出去更好维护
+from dense_decoder import DecoderLayer, init_weights 
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -19,7 +19,7 @@ def parse_args():
 
 def build_decoder(config, args):
     prefix_len = (args.gen_len) // 2
-    max_len = 32768
+    max_len = prefix_len + 512
     dtype = getattr(torch, args.dtype)
 
     decoder = DecoderLayer(

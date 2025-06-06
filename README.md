@@ -91,8 +91,8 @@ First generate cost analysis csv files using the scripts mentioned above. Then r
 #### Benchmark Block TopK Attention throughput
 Contains paged-attention implementation of dense attention and block top-k attention. We only provide implementation for 1 decoder layer, considering n-way Tensor Parallelism (n is the number of key-value heads).
 ```
-python3 benchmark/dense.py <model>
-python3 benchmark/blocktopk.py <model>
+python3 dense.py --model Qwen/Qwen3-8B --gen_len 32768 --batch_size 4096 --page_size 16 --world_size 8
+python3 blocktopk.py --model Qwen/Qwen3-8B --gen_len 32768 --batch_size 4096 --page_size 16 --topk_page 64 --world_size 8
 ```
 
 ### TODOs

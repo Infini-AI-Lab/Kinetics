@@ -511,8 +511,8 @@
                   <p style="margin-top: 8px; font-size: 14px; color: #666;">Figure 5a: Best-of-N scaling comparison between oracle top-k and dense attention</p>
                 </div>
                 <div style="text-align: center;">
-                  <img src="static/images/aime24_qwen3-8b_scaling_logerr_extended_tradeoff-1.jpg" alt="topk-benefits" style="width: 100%; height: auto; border-radius: 6px;" />
-                  <p style="margin-top: 8px; font-size: 14px; color: #666;">Figure 5b: Best-of-N using Qwen3-8B </p>
+                  <img src="static/images/aime24_qwen3-30b-a3b_scaling_logerr_extended_tradeoff.jpg" alt="topk-benefits" style="width: 100%; height: auto; border-radius: 6px;" />
+                  <p style="margin-top: 8px; font-size: 14px; color: #666;">Figure 5b: Best-of-N using Qwen3-30B-A3B </p>
                 </div>
                 <div style="text-align: center;">
                   <img src="static/images/aime24_qwen3-32b_scaling_logerr_extended_tradeoff-1.jpg" alt="topk-benefits" style="width: 100%; height: auto; border-radius: 6px;" />
@@ -523,8 +523,8 @@
                   <p style="margin-top: 8px; font-size: 14px; color: #666;">Figure 5d: Long-CoT scaling comparison between oracle top-k and dense attention</p>
                 </div>
                 <div style="text-align: center;">
-                  <img src="static/images/aime24_qwen3-8b_acc_vs_genlen-1.jpg" alt="topk-benefits" style="width: 100%; height: auto; border-radius: 6px;" />
-                  <p style="margin-top: 8px; font-size: 14px; color: #666;">Figure 5e: Long-CoT using Qwen3-8B </p>
+                  <img src="static/images/aime24_qwen3-30b-a3b_acc_vs_genlen.jpg" alt="topk-benefits" style="width: 100%; height: auto; border-radius: 6px;" />
+                  <p style="margin-top: 8px; font-size: 14px; color: #666;">Figure 5e: Long-CoT using Qwen3-30B-A3B </p>
                 </div>
                 <div style="text-align: center;">
                   <img src="static/images/aime24_qwen3-32b_acc_vs_genlen-1.jpg" alt="topk-benefits" style="width: 100%; height: auto; border-radius: 6px;" />
@@ -534,7 +534,7 @@
               <br>
               <p>
                 <strong>Figure 5: Figures 5a and 5d</strong> show that sparse attention significantly improves performance and scalability, enabling higher accuracy at lower cost budgets. 
-                <strong>Figures 5b, 5c, 5e, and 5f</strong> highlight that both 8B and 32B models benefit from sparsity, with <em>50–60 percentage point</em> gains in low-cost settings and consistent <em>~5 point</em> improvements even in high-cost regimes. 
+                <strong>Figures 5b, 5c, 5e, and 5f</strong> highlight that both Qwen3 30B-A3B and 32B models benefit from sparsity, with <em>50–60 percentage point</em> gains in low-cost settings and consistent <em>~5 point</em> improvements even in high-cost regimes. 
                 Notably, sparse models reach these performance levels at much lower costs. For reference, 10<sup>5</sup> Tera-eFLOPs is 22 seconds of B200 usage at 100% utilization.
               </p>
             </div>

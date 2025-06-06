@@ -538,6 +538,34 @@
                 Notably, sparse models reach these performance levels at much lower costs. For reference, 10<sup>5</sup> Tera-eFLOPs is 22 seconds of B200 usage at 100% utilization.
               </p>
             </div>
+            
+          <br>
+            <h4 style="margin-bottom: 16px;">
+              <img src="static/images/icons/Idea.png" style="height: 36px; display: inline; vertical-align: middle;"/>
+              &nbsp; Sparse attention becomes increasingly valuable in high-cost scenarios
+            </h4>
+            
+            <div style="background: #ffffff; padding: 24px; font-size: 16px; line-height: 1.6; color: #333; border-radius: 6px;">
+              <div style="display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap;">
+                <div style="flex: 1 1 55%;">
+                  
+                  <p>
+                    We investigate the tradeoff between KV budget B and generation tokens. For Best-of-N, we analyze how the optimal KV budget and the number of generated tokens scale with cost across N reasoning trials. 
+                    <p>
+                    <span style="display: block; background-color: #e6f0fb; border-left: 4px solid #4b6cb7; padding: 12px 16px; border-radius: 6px;">
+                      Our analysis reveals a consistent trend: allocating additional compute toward generating more tokens is generally more effective than expanding the KV cache.
+                    </span>
+                    </p>
+                    In Best-of-N frontier, doubling the cost leads to only a 1.18× increase in KV budget, compared to a 1.74× increase in total generated tokens.
+                  </p>
+                </div>
+                <div style="flex: 1 1 40%; text-align: center;">
+                  <img src="static/images/presenterationn7-1.jpg" alt="topk-benefits" style="width: 100%; height: auto; border-radius: 6px" />
+                  <p style="margin-top: 8px; font-size: 14px; color: #666;">Figure 6: Compared to the dense scaling, small models (0.6B, 1.7B, 4B) are more effective with sparse attention. In other words, they occupy more space in the Pareto Frontier</p>
+                </div>
+              </div>
+            </div>   
+          
             <br>
             <h4 style="margin-bottom: 16px;">
               <img src="static/images/icons/Idea.png" style="height: 36px; display: inline; vertical-align: middle;"/>
@@ -560,7 +588,7 @@
                 </div>
                 <div style="flex: 1 1 40%; text-align: center;">
                   <img src="static/images/presenterationn7-1.jpg" alt="topk-benefits" style="width: 100%; height: auto; border-radius: 6px" />
-                  <p style="margin-top: 8px; font-size: 14px; color: #666;">Figure 6: Compared to the dense scaling, small models (0.6B, 1.7B, 4B) are more effective with sparse attention. In other words, they occupy more space in the Pareto Frontier</p>
+                  <p style="margin-top: 8px; font-size: 14px; color: #666;">Figure 7: Compared to the dense scaling, small models (0.6B, 1.7B, 4B) are more effective with sparse attention. In other words, they occupy more space in the Pareto Frontier</p>
                 </div>
               </div>
             </div>   
@@ -571,27 +599,27 @@
             </h4>
             <div style="background: #ffffff; padding: 24px; font-size: 16px; line-height: 1.6; color: #333;">
               <p>
-                We explore two tractable alternatives to oracle top-k attention: <strong>block top-k attention</strong> and <strong>sliding window attention</strong>. Although sliding window attention is easier to implement and has zero search overhead, its performance is extremely poor. Block top-k attention demonstrates comparable scaling to the oracle top-k attention, improving accuracy by 45 points in the low-cost regime and achieving equivalent accuracy while using 8.58X fewer resources compared to dense attention.. 
+                We explore two tractable alternatives to oracle top-k attention: <strong>block top-k attention</strong> and <strong>sliding window attention</strong>. Although sliding window attention is easier to implement and has zero search overhead, its performance is extremely poor. Block top-k attention demonstrates comparable scaling to the oracle top-k attention, improving accuracy by 45 points in the low-cost regime and achieving equivalent accuracy while using 8.58X fewer resources compared to dense attention.
               </p>
             
               <!-- Wrap each image + caption in a single div -->
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
                 <div>
                   <img src="static/images/aime24_qwen3-8b_sparse_method_comparison-1.jpg" alt="sparse comparison trials" style="width: 100%; height: auto; border-radius: 6px;" />
-                  <p style="margin-top: 8px; font-size: 14px; color: #666; text-align: center;">Figure 7a: Sparse algorithm comparison</p>
+                  <p style="margin-top: 8px; font-size: 14px; color: #666; text-align: center;">Figure 8a: Sparse algorithm comparison</p>
                 </div>
                 <div>
                   <img src="static/images/AIME24-blocktopk-trial-1.jpg" alt="block topk trial" style="width: 100%; height: auto; border-radius: 6px;" />
-                  <p style="margin-top: 8px; font-size: 14px; color: #666; text-align: center;">Figure 7b: Block top-k Best-of-N scaling</p>
+                  <p style="margin-top: 8px; font-size: 14px; color: #666; text-align: center;">Figure 8b: Block top-k Best-of-N scaling</p>
                 </div>
                 <div>
                   <img src="static/images/AIME24-blocktopk-genlen-1.jpg" alt="block topk genlen" style="width: 100%; height: auto; border-radius: 6px;" />
-                  <p style="margin-top: 8px; font-size: 14px; color: #666; text-align: center;">Figure 7c: Block top-k Long-CoT scaling</p>
+                  <p style="margin-top: 8px; font-size: 14px; color: #666; text-align: center;">Figure 8c: Block top-k Long-CoT scaling</p>
                 </div>
               </div>
             
               <p style="margin-top: 20px;">
-                <strong>Figure 7:</strong> <strong>(a)</strong> illustrates how block top-k attention scaling closely follows the oracle top-k scaling for the Qwen3-8B model on AIME24 tasks. <strong>(b)</strong> and <strong>(c)</strong> illustrate the Pareto frontiers of block top-k attention.
+                <strong>Figure 8:</strong> <strong>(a)</strong> illustrates how block top-k attention scaling closely follows the oracle top-k scaling for the Qwen3-8B model on AIME24 tasks. <strong>(b)</strong> and <strong>(c)</strong> illustrate the Pareto frontiers of block top-k attention.
               </p>
             </div>
             

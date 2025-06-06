@@ -22,32 +22,31 @@ def compute_tradeoff(log_file, tokenizer, **kwargs):
         # read rest of the lines as dicts
         data = [json.loads(line) for line in f]
         
+    # cehck if attn_local is there, or return None
     is_sparse = metadata.get("attn_local", None) is not None
     is_block_sparse = is_sparse and metadata.get("attn_block_topk", None) is not None
-     
+    
+    # step 1: aggregate responses for the same query
     df = pd.DataFrame(data)
+    
+    # only take the first item from the predictions list and choices list
     df["prediction"] = df["prediction"].apply(lambda x: x[0])
     df["choices"] = df["choices"].apply(lambda x: x[0])
     
+    # Use partial to pass tokenizer and template to map
     template_func = partial(apply_chat_template, tokenizer=tokenizer, template=MATH_QUERY_TEMPLATE)
 
+    # Apply with multiprocessing
     dataset = Dataset.from_pandas(df)
     tokenized_dataset = dataset.map(template_func, num_proc=8, desc="Applying chat template")
 
+    # Optionally convert to pandas for groupby
     df_tokenized = tokenized_dataset.to_pandas()
     
     # Group by 'query' and 'choices' and aggregate 'token_ids' and 'score' into lists
-    # first map query to query ids, replace query with query_id
-    unique_queries = df_tokenized["query"].unique()
-    query_to_id = {query: i for i, query in enumerate(unique_queries)}
-    df_tokenized["query_id"] = df_tokenized["query"].map(query_to_id)
-    
-    # drop query column
-    df_tokenized = df_tokenized.drop(columns=["query", "choices"])
-    
     grouped_df = (
         df_tokenized
-        .groupby(["query_id", "prefix_length"])
+        .groupby(["query", "choices", "prefix_length"])   
         .agg({"token_length": list, "score": list})
         .reset_index()
     )
@@ -82,15 +81,16 @@ def compute_tradeoff(log_file, tokenizer, **kwargs):
             budget = kwargs["local"] + kwargs["block_topk"] * kwargs["block_size"]
         else:
             cost_fn = zero_overhead_sparse_cost
-            kwargs["budget"] = metadata["attn_local"] + metadata.get("attn_topk", 0)
+            attn_topk = metadata.get("attn_topk", 0)
+            attn_topk = 0 if attn_topk is None else attn_topk
+            kwargs["budget"] = metadata["attn_local"] + attn_topk
             budget = kwargs["budget"]
         
         for ntrial, cov_trial in zip(num_trials, cov):
-                
             compute_cost, memory_cost = expected_cost(cost_fn, generation_lengths, ntrial, context_length=context_length, **kwargs)
             
             res_dict = {
-                "query_id": index,
+                "query_id": row["question_id"] if "question_id" in row else index,
                 "generation_length": generation_lengths,
                 "trial": ntrial,
                 "coverage": cov_trial,
@@ -99,14 +99,20 @@ def compute_tradeoff(log_file, tokenizer, **kwargs):
                 "total_cost": compute_cost + memory_cost
             }
             
+            if "choices" in row:
+                res_dict["choices"] = row["choices"]
+            if "query" in row:
+                res_dict["query"] = row["query"]
+            if "difficulty" in row:
+                res_dict["difficulty"] = row["difficulty"]
+            
             if is_sparse:
                 res_dict["budget"] = budget
                 
             result_df.append(res_dict)
     result_df = pd.DataFrame(result_df)
-
+    
     return result_df
-
 
 if __name__ == "__main__":
     E_flops = 562.5
@@ -125,7 +131,7 @@ if __name__ == "__main__":
     sparse_arg = sys.argv[2]
     res_dir = f"{task}/{sparse_arg}"
     
-    for model in ["Qwen3-32B", "Qwen3-14B", "Qwen3-8B", "Qwen3-4B", "Qwen3-1.7B", "Qwen3-0.6B"]:   
+    for model in ["Qwen3-32B", "Qwen3-14B", "Qwen3-8B", "Qwen3-4B", "Qwen3-1.7B", "Qwen3-0.6B"]:
         config = AutoConfig.from_pretrained(f"Qwen/{model}")
         tokenizer = AutoTokenizer.from_pretrained(f"Qwen/{model}")
         

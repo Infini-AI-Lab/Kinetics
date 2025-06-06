@@ -12,3 +12,13 @@ To benchmark throughput of block-topk attention with page size 16 and 64 topk pa
 ```
 python3 blocktopk.py --model Qwen/Qwen3-8B --gen_len 32768 --batch_size 256 --page_size 16 --topk_page 64 --world_size 8
 ```
+
+## TODO
+Currently our benchmark does not show end-to-end throughput improvements. Stay tuned for the upcoming updates.
+
+- [ ] **SGLang Integration**
+
+    - We are adding support for block top-k attention into SGLang to demonstrate end-to-end throughput improvements with sparse attention.
+
+ 
+

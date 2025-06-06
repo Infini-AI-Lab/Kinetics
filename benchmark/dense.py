@@ -19,7 +19,7 @@ def parse_args():
 
 def build_decoder(config, args):
     prefix_len = (args.gen_len) // 2
-    max_len = 32768
+    max_len = prefix_len + 512
     dtype = getattr(torch, args.dtype)
 
     decoder = DecoderLayer(

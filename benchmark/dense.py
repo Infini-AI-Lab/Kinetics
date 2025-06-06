@@ -3,7 +3,7 @@ import time
 import torch
 import torch.nn as nn
 from transformers import AutoConfig
-from dense_decoder import DecoderLayer, init_weights  # 将 DecoderLayer 拆出去更好维护
+from dense_decoder import DecoderLayer, init_weights 
 
 def parse_args():
     parser = argparse.ArgumentParser()

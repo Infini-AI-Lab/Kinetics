@@ -18,8 +18,8 @@ The repository is organized as follows,
 ```
 Kinetics/
 ├── benchmark/
-|   ├──benchmark_blocktopk.py
-|   └──benchmark_dense.py
+|   ├──blocktopk.py
+|   └──dense.py
 ├── cost_model
 |   ├── best_of_N
 |   |   ├── cost_model_ntrial.py
@@ -88,11 +88,11 @@ First generate cost analysis csv files using the scripts mentioned above. Then r
   </tr>
 </table>
 
-#### Benchmark task throughput
+#### Benchmark Block TopK Attention throughput
 Contains paged-attention implementation of dense attention and block top-k attention. We only provide implementation for 1 decoder layer, considering n-way Tensor Parallelism (n is the number of key-value heads).
 ```
-python3 benchmark/benchmark_dense.py <model>
-python3 benchmark/benchmark_blocktopk.py <model>
+python3 benchmark/dense.py <model>
+python3 benchmark/blocktopk.py <model>
 ```
 
 ### TODOs

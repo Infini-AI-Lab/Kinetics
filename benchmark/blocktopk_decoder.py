@@ -223,7 +223,7 @@ class BlockTopkDecoderLayer(nn.Module):
         o = self.decode_run(
             query_states, self.kv_cache
         ) 
-        
+        o = o.reshape(bsz, q_len, self.head_dim * self.num_heads)
         hidden_states = self.wo(o)
         
         hidden_states = residual + hidden_states

@@ -13,7 +13,9 @@ If you:
 
 **LiteSys** is a great choice.
 
-![LiteSys Icon](assets/litesys.png)
+<p align="center">
+  <img src="assets/litesys.png" alt="LiteSys Icon" width="150"/>
+</p>
 
 **LiteSys** is a lightweight, flexible serving system designed specifically for **academic research on large language models (LLMs)** (and implementation for [Kinetics: Rethinking Test-Time Scaling Laws](https://arxiv.org/abs/2506.05333)).
 

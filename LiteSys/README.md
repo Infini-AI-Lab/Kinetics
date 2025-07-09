@@ -14,7 +14,7 @@ If you:
 <table>
   <tr>
     <td><img src="assets/hf_sglang.png" height="300px" /></td>
-    <td><img src="assets/qwen_trials.png" height="300px" /></td>
+    <td><img src="assets/qwen_trial.png" height="300px" /></td>
   </tr>
 </table>
 

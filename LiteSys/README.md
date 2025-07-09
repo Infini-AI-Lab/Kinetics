@@ -11,9 +11,8 @@ If you:
 - 🐢 Find Hugging Face Transformers too slow for long-generation evaluation
 - 🎯 Feel painful to align performance and accuracy on benchmarks like AIME, AMC, or LiveCodeBench
 
-<div align="center">
-<h1><img src="assets/litesys.png" height="40px" align="top"/> LiteSys is a great choice.
-</h1>
+<h2><img src="assets/litesys.png" height="40px" align="top"/> LiteSys is a great choice.
+</h2>
 
 **LiteSys** is a lightweight, flexible serving system designed specifically for **academic research on large language models (LLMs)** (and implementation for [Kinetics: Rethinking Test-Time Scaling Laws](https://arxiv.org/abs/2506.05333)).
 

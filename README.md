@@ -116,6 +116,11 @@ First generate cost analysis csv files using the scripts mentioned above. Then r
   </tr>
 </table>
 
+#### Litesys
+We provide a benchmarking code for reasoning tasks including **AIME24**, **AIME25** and **LiveCodeBench** in the form of [LiteSys](https://github.com/Infini-AI-Lab/Kinetics/tree/benchmark/LiteSys). Currently it supports **continuous batching** and **sparse attention kernels**. 
+
+Note, the sparsity kernels are not optimized yet. We are currently working on integrating efficient implementations into SGLang.
+
 #### Benchmark Block TopK Attention throughput
 Contains paged-attention implementation of dense attention and block top-k attention. We only provide implementation for 1 decoder layer, considering n-way Tensor Parallelism (n is the number of key-value heads).
 ```

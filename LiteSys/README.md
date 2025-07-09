@@ -8,8 +8,10 @@
 If you:
 
 - ✅ Want an inference framework that's easy to extend with new models and algorithms
-- 🐢 Find Hugging Face Transformers too slow for long-generation evaluation
+- 🐢 Find Hugging Face Transformers too slow for long-generation evaluation, *e.s.p* **a lot of sampling trials**
 - 🎯 Feel painful to align performance and accuracy on benchmarks like AIME, AMC, or LiveCodeBench
+
+<img src="assets/qwen_trials.png" height="400px" align="top"/>
 
 <h2><img src="assets/litesys.png" height="40px" align="top"/> LiteSys is a great choice
 </h2>

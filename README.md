@@ -45,6 +45,13 @@ The repository is organized as follows,
 
 ```
 Kinetics/
+├── LiteSys/
+|   ├──examples/
+|   |   └── eval_math.sh 
+|   └──litesys/
+|   |   ├── attention/
+|   |   ├── engine/
+|   |   └── models/
 ├── benchmark/
 |   ├──blocktopk.py
 |   └──dense.py
@@ -63,6 +70,7 @@ Kinetics/
 ```
 - `cost_model/`: contains code to perform eFLOPs-based cost analysis for two different inference-scaling strategies - best of N and long CoT.
 - `benchmark/`: contains code for benchmarking the task throughput with block top-k and dense attention-based model. 
+- `litesys/`: contains code for performing reasoning benchmarking (contains continuous batching and sparse attention implementations (yet to be optimized)).
 
 ### Installation
 ```
@@ -115,6 +123,11 @@ First generate cost analysis csv files using the scripts mentioned above. Then r
     </td>
   </tr>
 </table>
+
+#### Litesys
+We provide a benchmarking code for reasoning tasks including **AIME24**, **AIME25** and **LiveCodeBench** in the form of [LiteSys](https://github.com/Infini-AI-Lab/Kinetics/tree/benchmark/LiteSys). Currently it supports **continuous batching** and **sparse attention kernels**. 
+
+Note, the sparsity kernels are not optimized yet. We are currently working on integrating efficient implementations into SGLang.
 
 #### Benchmark Block TopK Attention throughput
 Contains paged-attention implementation of dense attention and block top-k attention. We only provide implementation for 1 decoder layer, considering n-way Tensor Parallelism (n is the number of key-value heads).

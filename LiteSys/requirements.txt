@@ -1,0 +1,10 @@
+torch==2.5.1
+transformers==4.51.0
+datasets
+--extra-index-url https://flashinfer.ai/whl/cu124/torch2.4/
+flashinfer
+einops
+lighteval[math,code]
+jsonlines
+wandb
+flash-attn

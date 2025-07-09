@@ -122,7 +122,7 @@ class BlockTopkDecoderLayer(nn.Module):
         
         total_head_dim = (self.num_heads + 2 * self.num_kv_heads) * self.head_dim
         self.wqkv = nn.Linear(self.dim, total_head_dim, bias=True)
-        self.wo = nn.Linear(self.head_dim, self.dim, bias=False)
+        self.wo = nn.Linear(self.head_dim * self.num_heads, self.dim, bias=False)
         
         self.up_proj = nn.Linear(self.dim, self.intermediate_size, bias=False)
         self.gate_proj = nn.Linear(self.dim, self.intermediate_size, bias=False)
@@ -223,7 +223,7 @@ class BlockTopkDecoderLayer(nn.Module):
         o = self.decode_run(
             query_states, self.kv_cache
         ) 
-        
+        o = o.reshape(bsz, q_len, self.head_dim * self.num_heads)
         hidden_states = self.wo(o)
         
         hidden_states = residual + hidden_states

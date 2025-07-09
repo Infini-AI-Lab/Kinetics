@@ -11,7 +11,11 @@ If you:
 - 🐢 Find Hugging Face Transformers too slow for long-generation evaluation, *e.s.p* **a lot of sampling trials**
 - 🎯 Feel painful to align performance and accuracy on benchmarks like AIME, AMC, or LiveCodeBench
 
-<img src="assets/qwen_trials.png" height="400px" align="top"/>
+<div style="display: flex; align-items: flex-start;">
+  <img src="assets/hf_sglang.png" height="300px" style="margin-right: 20px;" />
+  <img src="assets/qwen_trials.png" height="300px" />
+</div>
+
 
 <h2><img src="assets/litesys.png" height="40px" align="top"/> LiteSys is a great choice
 </h2>

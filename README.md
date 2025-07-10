@@ -117,7 +117,7 @@ First generate cost analysis csv files using the scripts mentioned above. Then r
 </table>
 
 #### Litesys
-We provide a benchmarking code for reasoning tasks including **AIME24**, **AIME25** and **LiveCodeBench** in the form of [LiteSys](https://github.com/Infini-AI-Lab/Kinetics/tree/benchmark/LiteSys). Currently it supports **continuous batching** and **sparse attention kernels**. 
+We provide a benchmarking code for reasoning tasks including **AIME24**, **AIME25** and **LiveCodeBench** in the form of [LiteSys](https://github.com/Infini-AI-Lab/Kinetics/tree/benchmark/LiteSys). Currently it supports **continuous batching** and **sparse attention kernels**. More details can be found [here] (https://github.com/Infini-AI-Lab/Kinetics/tree/benchmark/LiteSys#readme).
 
 Note, the sparsity kernels are not optimized yet. We are currently working on integrating efficient implementations into SGLang.
 

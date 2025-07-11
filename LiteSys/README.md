@@ -55,7 +55,16 @@ bash example_tp.sh # Eval Qwen3-0.6B on GSM8K, 4K generation length.
 ```
 ETA: 16mins (2xL40 48GB), Pass@1: 74.3
 
-## Reference Evaluation Results
+## Evaluation time (vs. huggingface transformers)
+
+| Experiment      |      GPU             | LiteSys⚡| Huggingface |
+|:------------------|:------------|:-----------------------:|:----------------------------:|
+| Qwen3-1.7B AIME25 Pass@8 | 4 x L40 |          40min           |            5h             |
+| Qwen3-8B  AIME25 Pass@8 |  4 x L40 |     2h30min           |            7h30min             |
+| Qwen3-32B  AIME25 Pass@4 |  4 x A100 SXM    |    1h40min          |             4h             |
+
+
+## Reference Evaluation Results (> 32 runs)
 **AIME24**
 
 | Model                         | LiteSys⚡| Qwen3 Reported |
